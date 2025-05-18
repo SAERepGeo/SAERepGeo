@@ -9,7 +9,6 @@ Sparse Autoencoders (SAEs) have emerged as a predominant tool in mechanistic int
 2. **Case 2**: Representation Structure Analysis
 3. **Case 3**: Intervention Analysis
 
-The code is hosted anonymously at https://anonymous.4open.science/r/SAERepGeo.
 
 ## Reproducibility Guide
 
