@@ -34,7 +34,6 @@ Sparse Autoencoders (SAEs) have emerged as a predominant tool in mechanistic int
    pip install .
    ```
 
-**Note**: For GPU, install CUDA-specific PyTorch:
 
 ```bash
 pip install torch==2.5.1+cu121
@@ -56,7 +55,6 @@ Prepare `data/concept_prompts.json` with prompts for concepts (`months`, `days`,
   }
   ```
 
-- **Alternative**: Check `data/README.md` for download instructions or contact authors via NeurIPS portal.
 
 ### Running Experiments
 
@@ -70,7 +68,6 @@ python src/main.py
   - Case 1: `case1_stratified_manifold/{results,tokens_dict}_zero_noise.pkl`
   - Case 2: `case2_representation_structure/{residual_cache.pkl, clustering_analysis_results.csv, ...}`
   - Case 3: `case3_intervention_analysis/intervention_analysis_results_icd_monge.csv`
-- **Runtime**: \~1-2 hours (CPU), \~20-40 minutes (GPU).
 
 ### Verifying Results
 
