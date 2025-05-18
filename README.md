@@ -1,87 +1,113 @@
 SAERepGeo: Sparsification and Reconstruction from Representation Geometry
-This repository contains code for the paper "Sparsification and Reconstruction from the Perspective of Representation Geometry". It implements experiments analyzing Sparse Autoencoder (SAE) representation geometry in language models via three cases:
+
+This repository contains code for the paper, it's implements experiments analyzing Sparse Autoencoder (SAE) representation geometry in language models via three cases:
 
 Sparse Autoencoders (SAEs) have emerged as a predominant tool in mechanistic interpretability, aiming to identify interpretable monosemantic features. However, how does sparse encoding organize the representations of activation vector from language models? What is the relationship between this organizational paradigm and feature disentanglement as well as reconstruction performance? To address these questions, we propose the SAEMA, which validates the stratified structure of the representation by observing the variability of the rank of the symmetric semipositive definite (SSPD) matrix corresponding to the modal tensor unfolded along the latent tensor with the level of noise added to the residual stream. To systematically investigate how sparse encoding alters representational structures, we define local and global representations, demonstrating that they amplify inter-feature distinctions by merging similar semantic features and introducing additional degrees of freedom. Furthermore, we intervene the global representation from an optimization perspective, proving a significant causal relationship between their separability and the reconstruction performance. This study explains the principles of sparsity from the perspective of representational geometry and demonstrates the impact of changes in representational structure on reconstruction performance. Particularly emphasizes the necessity of understanding representations and incorporating representational constraints, providing empirical references for developing new interpretable tools and improving SAEs.
 
 
-Case 1: Stratified Manifold Analysis
-Case 2: Representation Structure Analysis
-Case 3: Intervention Analysis
+1. **Case 1**: Stratified Manifold Analysis
+2. **Case 2**: Representation Structure Analysis
+3. **Case 3**: Intervention Analysis
 
+The code is hosted anonymously at https://anonymous.4open.science/r/SAERepGeo.
 
-Reproducibility Guide
-Prerequisites
+## Reproducibility Guide
 
-Installation
+### Installation
 
-Clone the repository:git clone https:/github/SAERepGeo/SAERepGeo.git
-cd SAERepGeo
+1. Clone the repository:
 
+   ```bash
+   git clone https://github.com/SAERepGeo/SAERepGeo.git
+   cd SAERepGeo
+   ```
 
-Set up the Conda environment:conda env create -f environment.yml
-conda activate saerepgeo
+2. Set up the Conda environment:
 
+   ```bash
+   conda env create -f environment.yml
+   conda activate saerepgeo
+   ```
 
-Install the project:pip install .
+3. Install the project:
 
+   ```bash
+   pip install .
+   ```
 
+**Note**: For GPU, install CUDA-specific PyTorch:
 
-Note: For GPU, install CUDA-specific PyTorch:
+```bash
 pip install torch==2.5.1+cu121
+```
 
-Data Preparation
-Prepare data/concept_prompts.json with prompts for concepts (months, days, elements, etc.):
+### Data Preparation
 
-Generate: Use an LLM to create diverse prompts (see data/README.md for format).
-Example:{
-  "months": ["January is the first month.", ...],
-  "days": ["Monday is the first workday.", ...],
-  "elements": ["Hydrogen is the first element.", ...]
-}
+Prepare `data/concept_prompts.json` with prompts for concepts (`months`, `days`, `elements`, etc.):
 
+- **Generate**: Use an LLM to create diverse prompts (see `data/README.md` for format).
 
-Alternative: Check data/README.md for download instructions or contact authors via NeurIPS portal.
+- **Example**:
 
-Running Experiments
+  ```json
+  {
+    "months": ["January is the first month.", ...],
+    "days": ["Monday is the first workday.", ...],
+    "elements": ["Hydrogen is the first element.", ...]
+  }
+  ```
+
+- **Alternative**: Check `data/README.md` for download instructions or contact authors via NeurIPS portal.
+
+### Running Experiments
+
 Run all experiments (Case 1, 2, 3):
+
+```bash
 python src/main.py
+```
 
+- **Outputs** (in `outputs/`):
+  - Case 1: `case1_stratified_manifold/{results,tokens_dict}_zero_noise.pkl`
+  - Case 2: `case2_representation_structure/{residual_cache.pkl, clustering_analysis_results.csv, ...}`
+  - Case 3: `case3_intervention_analysis/intervention_analysis_results_icd_monge.csv`
+- **Runtime**: \~1-2 hours (CPU), \~20-40 minutes (GPU).
 
-Outputs (in outputs/):
-Case 1: case1_stratified_manifold/{results,tokens_dict}_zero_noise.pkl
-Case 2: case2_representation_structure/{residual_cache.pkl, clustering_analysis_results.csv, ...}
-Case 3: case3_intervention_analysis/intervention_analysis_results_icd_monge.csv
+### Verifying Results
 
+- **Case 1**: Check cached latents in `results_zero_noise.pkl` (zero noise; extend for multi-noise, see paper Page 5).
 
-Verifying Results
+- **Case 2**: Compare `clustering_analysis_results.csv` with paper Table 1 (Page 6).
 
-Case 1: Check cached latents in results_zero_noise.pkl (zero noise; extend for multi-noise, see paper Page 5).
-Case 2: Compare clustering_analysis_results.csv with paper Table 1 (Page 6).
-Case 3: Verify intervention_analysis_results_icd_monge.csv for MSE/AEDP correlations (Page 8).
-Run tests:python -m unittest discover tests
+- **Case 3**: Verify `intervention_analysis_results_icd_monge.csv` for MSE/AEDP correlations (Page 8).
 
+- Run tests:
 
-Troubleshooting
+  ```bash
+  python -m unittest discover tests
+  ```
 
-Missing concept_prompts.json: Generate or download (see Data Preparation).
-Dependency Issues: Recreate environment (conda env remove -n saerepgeo; conda env create -f environment.yml).
-GPU Errors: Use CPU (device = "cpu" in utils.py) or install CUDA 12.1.
-Contact: Open GitHub issue or contact authors via NeurIPS portal.
+### Troubleshooting
 
-Directory Structure
+- **Missing** `concept_prompts.json`: Generate or download (see Data Preparation).
+- **Dependency Issues**: Recreate environment (`conda env remove -n saerepgeo; conda env create -f environment.yml`).
+- **GPU Errors**: Use CPU (`device = "cpu"` in `utils.py`) or install CUDA 12.1.
+- **Contact**: Open GitHub issue or contact authors via NeurIPS portal.
 
-src/: Source code (main.py, experiment modules).
-data/: Input data (concept_prompts.json).
-outputs/: Experiment results.
-tests/: Unit tests.
-docs/: Documentation (experiment_details.md, api_reference.md).
+## Directory Structure
 
-License
-MIT License (see LICENSE).
-Notes
+- `src/`: Source code (`main.py`, experiment modules).
+- `data/`: Input data (`concept_prompts.json`).
+- `outputs/`: Experiment results.
+- `tests/`: Unit tests.
+- `docs/`: Documentation (`experiment_details.md`, `api_reference.md`).
 
-Anonymity: Hosted anonymously for NeurIPS compliance.
-Case 1 Limitation: Implements zero noise; extend case1_stratified_manifold.py for noise levels [0.0, 0.02, ..., 10.0] (paper Page 5).
-Details: See docs/experiment_details.md for hyperparameters and setup.
+## License
 
+MIT License (see `LICENSE`).
 
+## Notes
+
+- **Anonymity**: Hosted anonymously for NeurIPS compliance.
+- **Case 1 Limitation**: Implements zero noise; extend `case1_stratified_manifold.py` for noise levels `[0.0, 0.02, ..., 10.0]` (paper Page 5).
+- **Details**: See `docs/experiment_details.md` for hyperparameters and setup.
